@@ -43,7 +43,7 @@ def signup(request):
 @api_view(["GET", "PATCH"])
 def users(request, pk):
     if (authorization_header := request.META.get("HTTP_AUTHORIZATION")):
-        message = authorization_header.split(" ")[1][1:-1]
+        message = authorization_header.split(" ")[1]
         decoded_message = base64.b64decode(message)
         user_id, password = decoded_message.split(":")
         try:
@@ -139,7 +139,7 @@ def users(request, pk):
 @api_view(["POST"])
 def close(request):
     if (authorization_header := request.META.get("HTTP_AUTHORIZATION")):
-        message = authorization_header.split(" ")[1][1:-1]
+        message = authorization_header.split(" ")[1]
         decoded_message = base64.b64decode(message)
         user_id, password = decoded_message.split(":")
         try:
@@ -160,7 +160,7 @@ def close(request):
             status=status.HTTP_401_UNAUTHORIZED
         )
 
-    User.objects.delete(delete_user)
+    delete_user.delete()
 
     return Response(
         data={
