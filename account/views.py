@@ -8,6 +8,14 @@ from .models import User
 
 @api_view(["POST"])
 def signup(request):
+    if (not request.data.get("user_id") and not request.data.get("password")):
+        return Response(
+            data = {
+                "message": "Account creation failed",
+                "cause": "required user_id and password"
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
     serializer = UserCreateSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(nickname=serializer.validated_data.get("user_id"))
